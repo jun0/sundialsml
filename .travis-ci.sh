@@ -1,5 +1,7 @@
 #!/bin/sh
 
+lsb_release -a
+
 case $TRAVIS_OS_NAME in
 linux)
         # We assume Ubuntu.
