@@ -1,10 +1,15 @@
 #!/bin/sh
 
-lsb_release -a
-
 case $TRAVIS_OS_NAME in
 linux)
         # We assume Ubuntu.
+        case "$OCAML_VERSION,$OPAM_VERSION" in
+        3.12.1,1.1.1) ppa=avsm/ocaml312+opam11 ;;
+        4.00.1,1.1.1) ppa=avsm/ocaml40+opam11 ;;
+        4.01.0,1.1.1) ppa=avsm/ocaml41+opam11 ;;
+        *)            echo Unknown $OCAML_VERSION,$OPAM_VERSION; exit 1 ;;
+        esac
+        echo "yes" | sudo add-apt-repository ppa:$ppa
         sudo apt-get update -qq
         sudo apt-get install -qq libsundials-serial-dev ocaml ocaml-native-compilers opam
        ;;
@@ -41,4 +46,4 @@ opam --git-version
 opam install ${OPAM_DEPS}
 ./configure
 make
-make -C examples tests.opt.log
+
