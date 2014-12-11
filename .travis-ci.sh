@@ -42,7 +42,6 @@ osx)
                 exit 1;;
         esac
        ;;
-        ;;
 esac
 
 export OPAMYES=1
