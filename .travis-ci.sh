@@ -7,6 +7,7 @@ linux)
         3.12.1,1.1.1) ppa=avsm/ocaml312+opam11 ;;
         4.00.1,1.1.1) ppa=avsm/ocaml40+opam11 ;;
         4.01.0,1.1.1) ppa=avsm/ocaml41+opam11 ;;
+        4.02.0,1.1.1) ppa=avsm/ocaml42+opam11 ;;
         *)            echo Unknown $OCAML_VERSION,$OPAM_VERSION; exit 1 ;;
         esac
         echo "yes" | sudo add-apt-repository ppa:$ppa
@@ -25,6 +26,9 @@ no)  OPAM_DEPS="ocamlfind";;
 *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
      exit 1;;
 esac
+
+export OPAMYES=1
+export OPAMVERBOSE=1
 
 opam init
 eval `opam config env`
