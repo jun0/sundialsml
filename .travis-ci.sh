@@ -15,7 +15,7 @@ linux)
         sudo apt-get install -qq libsundials-serial-dev ocaml ocaml-native-compilers opam
         case $OCAML_MPI in
             yes) OPAM_DEPS="ocamlfind mpi"
-                 sudo apt-get install openmpi-bin
+                 sudo apt-get install openmpi-bin libopenmpi-dev
                  ;;
             no)  OPAM_DEPS="ocamlfind";;
             *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
