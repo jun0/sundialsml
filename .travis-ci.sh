@@ -35,7 +35,7 @@ linux)
             *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
                  exit 1;;
         esac
-        dpkg -l sundials
+        lsb_release -a
         if dpkg -l libsundials-serial-dev | grep 2.5.0; then
             sudo apt-get install -qq libsundials-serial-dev
         else
