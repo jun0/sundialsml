@@ -9,5 +9,5 @@ env:
   - OCAML_VERSION=3.12.1 OCAML_MPI=yes OPAM_VERSION=1.2.0
   - OCAML_VERSION=3.12.1 OCAML_MPI=no  OPAM_VERSION=1.2.0
 os:
-  - linux
   - osx
+  - linux
