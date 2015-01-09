@@ -17,6 +17,7 @@ function build_sundials_c () {
 case $TRAVIS_OS_NAME in
 linux)
         # We assume Ubuntu.
+        lsb_release -a
         case "$OCAML_VERSION,$OPAM_VERSION" in
         3.12.1,1.2.0) ppa=avsm/ocaml312+opam12 ;;
         4.00.1,1.2.0) ppa=avsm/ocaml40+opam12 ;;
@@ -26,7 +27,6 @@ linux)
         esac
         echo "yes" | sudo add-apt-repository ppa:$ppa
         sudo apt-get update -qq
-        sudo apt-get install ocaml ocaml-native-compilers opam
         case $OCAML_MPI in
             yes) OPAM_DEPS="ocamlfind mpi"
                  sudo apt-get install openmpi-bin libopenmpi-dev
@@ -35,8 +35,10 @@ linux)
             *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
                  exit 1;;
         esac
-        lsb_release -a
-        if dpkg -l libsundials-serial-dev | grep 2.5.0; then
+        sudo apt-get install ocaml ocaml-native-compilers opam
+        # Apparently CLI of apt isn't quite stable yet, but this is
+        # simple enough that it should work.
+        if apt list libsundials-serial-dev | grep 2.5.0; then
             sudo apt-get install -qq libsundials-serial-dev
         else
             sudo apt-get install wget
