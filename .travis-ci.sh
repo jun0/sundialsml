@@ -56,7 +56,6 @@ osx)
             *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
                 exit 1;;
         esac
-       ;;
         brew install sundials ocaml opam
         case "$OCAML_VERSION,$OPAM_VERSION" in
         3.12.1,1.1.1) echo "Skipping this configuration."; exit 0 ;;
@@ -65,6 +64,7 @@ osx)
         4.02.0,1.1.1) ;;
         *)            echo Unknown $OCAML_VERSION,$OPAM_VERSION; exit 1 ;;
         esac
+       ;;
 esac
 
 export OPAMYES=1
