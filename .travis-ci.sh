@@ -1,12 +1,14 @@
-#!/bin/sh -e
+#!/bin/sh
 
 function build_sundials_c () {
     instroot=`pwd`
     wget http://archive.ubuntu.com/ubuntu/pool/universe/s/sundials/sundials_2.5.0.orig.tar.gz || exit 1
     tar -axf sundials_2.5.0.orig.tar.gz || exit 1
     cd sundials-2.5.0/ || exit 1
-    # MPI should be detected automatically
-    ./configure --enable-shared --prefix "$instroot/sundials" || exit 1
+    # MPI should be detected automatically.  Optimizations and
+    # examples are a waste of time right now.  If we decide to run the
+    # examples, we need to change this.
+    ./configure CFLAGS=-O0 --enable-shared --prefix "$instroot/sundials" || exit 1
     make || exit 1
     make install || exit 1
     cd .. || exit 1
@@ -33,12 +35,10 @@ linux)
             *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
                  exit 1;;
         esac
-        echo "Checking sundials version: dpkg -l libsundials-serial-dev | grep 2.5.0"
+        dpkg -l sundials
         if dpkg -l libsundials-serial-dev | grep 2.5.0; then
-            echo "2.5.0 seems to be available"
             sudo apt-get install -qq libsundials-serial-dev
         else
-            echo "2.5.0 not found; building from source"
             sudo apt-get install wget
             build_sundials_c || exit 2
             export PATH="`pwd`/sundials/bin:$PATH"
