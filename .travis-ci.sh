@@ -2,16 +2,16 @@
 
 function build_sundials_c () {
     instroot=`pwd`
-    wget http://archive.ubuntu.com/ubuntu/pool/universe/s/sundials/sundials_2.5.0.orig.tar.gz || exit 1
-    tar -axf sundials_2.5.0.orig.tar.gz || exit 1
-    cd sundials-2.5.0/ || exit 1
+    curl -OL http://archive.ubuntu.com/ubuntu/pool/universe/s/sundials/sundials_2.5.0.orig.tar.gz
+    tar -axf sundials_2.5.0.orig.tar.gz
+    cd sundials-2.5.0/
     # MPI should be detected automatically.  Optimizations and
     # examples are a waste of time right now.  If we decide to run the
     # examples, we need to change this.
-    ./configure CFLAGS=-O0 --enable-shared --prefix "$instroot/sundials" || exit 1
-    make || exit 1
-    make install || exit 1
-    cd .. || exit 1
+    ./configure CFLAGS=-O0 --enable-shared --prefix "$instroot/sundials"
+    make
+    make install
+    cd ..
 }
 
 case $TRAVIS_OS_NAME in
@@ -41,7 +41,7 @@ linux)
         if apt list libsundials-serial-dev | grep 2.5.0; then
             sudo apt-get install -qq libsundials-serial-dev
         else
-            sudo apt-get install wget
+            sudo apt-get install curl
             build_sundials_c || exit 2
             export PATH="`pwd`/sundials/bin:$PATH"
         fi
