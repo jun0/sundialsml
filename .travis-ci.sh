@@ -1,4 +1,16 @@
-#!/bin/sh
+#!/bin/sh -e
+
+function build_sundials_c () {
+    instroot=`pwd`
+    wget http://archive.ubuntu.com/ubuntu/pool/universe/s/sundials/sundials_2.5.0.orig.tar.gz || exit 1
+    tar -axf sundials_2.5.0.orig.tar.gz || exit 1
+    cd sundials-2.5.0/ || exit 1
+    # MPI should be detected automatically
+    ./configure --enable-shared --prefix "$instroot/sundials" || exit 1
+    make || exit 1
+    make install || exit 1
+    cd .. || exit 1
+}
 
 case $TRAVIS_OS_NAME in
 linux)
@@ -12,15 +24,25 @@ linux)
         esac
         echo "yes" | sudo add-apt-repository ppa:$ppa
         sudo apt-get update -qq
-        sudo apt-get install -qq libsundials-serial-dev ocaml ocaml-native-compilers opam
+        sudo apt-get install ocaml ocaml-native-compilers opam
         case $OCAML_MPI in
             yes) OPAM_DEPS="ocamlfind mpi"
                  sudo apt-get install openmpi-bin libopenmpi-dev
                  ;;
             no)  OPAM_DEPS="ocamlfind";;
             *)   echo "Unrecognized OCAML_MPI: ${OCAML_MPI}"
-                exit 1;;
+                 exit 1;;
         esac
+        echo "Checking sundials version: dpkg -l libsundials-serial-dev | grep 2.5.0"
+        if dpkg -l libsundials-serial-dev | grep 2.5.0; then
+            echo "2.5.0 seems to be available"
+            sudo apt-get install -qq libsundials-serial-dev
+        else
+            echo "2.5.0 not found; building from source"
+            sudo apt-get install wget
+            build_sundials_c || exit 2
+            export PATH="`pwd`/sundials/bin:$PATH"
+        fi
        ;;
 osx)
         brew update
