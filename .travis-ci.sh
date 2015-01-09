@@ -48,15 +48,6 @@ linux)
        ;;
 osx)
         brew update
-        brew install sundials ocaml opam
-        case "$OCAML_VERSION,$OPAM_VERSION" in
-        3.12.1,1.1.1) echo "Skipping this configuration."; exit 0 ;;
-        4.00.1,1.1.1) echo "Skipping this configuration."; exit 0 ;;
-        4.01.0,1.1.1) echo "Skipping this configuration."; exit 0 ;;
-        4.02.0,1.1.1) ;;
-        *)            echo Unknown $OCAML_VERSION,$OPAM_VERSION; exit 1 ;;
-        esac
-
         case $OCAML_MPI in
             yes) OPAM_DEPS="ocamlfind mpi"
                  brew install open-mpi
@@ -66,6 +57,14 @@ osx)
                 exit 1;;
         esac
        ;;
+        brew install sundials ocaml opam
+        case "$OCAML_VERSION,$OPAM_VERSION" in
+        3.12.1,1.1.1) echo "Skipping this configuration."; exit 0 ;;
+        4.00.1,1.1.1) echo "Skipping this configuration."; exit 0 ;;
+        4.01.0,1.1.1) echo "Skipping this configuration."; exit 0 ;;
+        4.02.0,1.1.1) ;;
+        *)            echo Unknown $OCAML_VERSION,$OPAM_VERSION; exit 1 ;;
+        esac
 esac
 
 export OPAMYES=1
