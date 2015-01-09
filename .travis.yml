@@ -3,7 +3,6 @@ language: c
 script: SUNDIALS_VERSION=2.5.0 bash -ex .travis-ci.sh
 os:
 - osx
-- linux
 env:
   - OCAML_VERSION=4.02.0 OCAML_MPI=yes OPAM_VERSION=1.2.0
   - OCAML_VERSION=4.01.0 OCAML_MPI=yes OPAM_VERSION=1.2.0
