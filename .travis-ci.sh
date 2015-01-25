@@ -14,6 +14,8 @@ function build_sundials_c () {
     cd ..
 }
 
+echo "test-running travis"
+
 case $TRAVIS_OS_NAME in
 linux)
         # We assume Ubuntu.
